@@ -13,8 +13,8 @@ import org.photonvision.vision.pipeline.CVPipelineSettings;
 import org.photonvision.vision.pipeline.DriverModePipelineSettings;
 import org.photonvision.vision.processes.PipelineManager;
 
-public class USBCameraConfiguration {
-    private static final Logger logger = new Logger(USBCameraConfiguration.class, LogGroup.Camera);
+public class CameraConfiguration {
+    private static final Logger logger = new Logger(CameraConfiguration.class, LogGroup.Camera);
 
     public String baseName = "";
     public String uniqueName = "";
@@ -25,11 +25,11 @@ public class USBCameraConfiguration {
     public CameraCalibrationCoefficients calibration;
     public List<Integer> cameraLeds = new ArrayList<>();
 
-    public USBCameraConfiguration(String baseName, String path) {
+    public CameraConfiguration(String baseName, String path) {
         this(baseName, baseName, baseName, path);
     }
 
-    public USBCameraConfiguration(String baseName, String uniqueName, String nickname, String path) {
+    public CameraConfiguration(String baseName, String uniqueName, String nickname, String path) {
         this.baseName = baseName;
         this.uniqueName = uniqueName;
         this.nickname = nickname;
@@ -39,7 +39,7 @@ public class USBCameraConfiguration {
     }
 
     @JsonCreator
-    public USBCameraConfiguration(
+    public CameraConfiguration(
             @JsonProperty("baseName") String baseName,
             @JsonProperty("uniqueName") String uniqueName,
             @JsonProperty("nickname") String nickname,
