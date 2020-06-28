@@ -3,15 +3,12 @@ plugins {
     id 'application'
     id 'com.github.johnrengelman.shadow' version '5.2.0'
     id "com.diffplug.gradle.spotless" version "3.28.0"
-    id "application"
 }
 
 mainClassName = 'org.photonvision.Main'
 
 group 'org.photonvision'
 version '2020.6.1'
-
-mainClassName = "org.photonvision.server.Main"
 
 sourceCompatibility = 11
 
