@@ -1,6 +1,7 @@
-package org.photonvision.vision.pipeline;
+package org.photonvision.vision.pipeline.result;
 
 import java.util.List;
+
 import org.photonvision.vision.frame.Frame;
 
 public class DriverModePipelineResult extends CVPipelineResult {
