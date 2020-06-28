@@ -1,5 +1,7 @@
 package org.photonvision.vision.processes;
 
+import org.photonvision.vision.camera.USBCameraSource;
+import org.photonvision.vision.frame.consumer.MJPGFrameConsumer;
 import org.photonvision.vision.pipeline.CVPipelineSettings;
 
 import java.util.ArrayList;
@@ -15,6 +17,7 @@ public class VisionModuleManager {
             var visionSource = entry.getKey();
             var pipelineManager = new PipelineManager(entry.getValue());
             var module = new VisionModule(pipelineManager, visionSource);
+            if(visionSource instanceof USBCameraSource) module.addFrameConsumer(new MJPGFrameConsumer((USBCameraSource) visionSource));
             visionModules.add(module);
             // todo: logging
         }
