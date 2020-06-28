@@ -1,6 +1,5 @@
 package org.photonvision.vision.processes;
 
-import org.photonvision.vision.frame.consumer.MJPGFrameConsumer;
 import org.photonvision.vision.pipeline.CVPipelineSettings;
 
 import java.util.ArrayList;
