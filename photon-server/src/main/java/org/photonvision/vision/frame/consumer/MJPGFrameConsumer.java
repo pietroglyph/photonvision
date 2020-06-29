@@ -2,6 +2,8 @@ package org.photonvision.vision.frame.consumer;
 
 import edu.wpi.cscore.CvSource;
 import edu.wpi.first.cameraserver.CameraServer;
+import org.opencv.core.Mat;
+import org.opencv.core.Size;
 import org.photonvision.common.configuration.CameraConfiguration;
 import org.photonvision.vision.frame.Frame;
 import org.photonvision.vision.frame.FrameConsumer;
@@ -16,6 +18,10 @@ public class MJPGFrameConsumer implements FrameConsumer {
 
     public MJPGFrameConsumer(CameraConfiguration visionSource) {
         this(visionSource.nickname, 320, 240);
+    }
+
+    public void setResolution(Size size) {
+        cvSource.setResolution((int) size.width, (int) size.height);
     }
 
     @Override

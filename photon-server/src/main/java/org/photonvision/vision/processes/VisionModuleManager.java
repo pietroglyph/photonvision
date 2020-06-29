@@ -1,6 +1,5 @@
 package org.photonvision.vision.processes;
 
-import org.photonvision.vision.camera.USBCameraSource;
 import org.photonvision.vision.frame.consumer.MJPGFrameConsumer;
 import org.photonvision.vision.pipeline.CVPipelineSettings;
 
@@ -8,7 +7,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-/** VisionModuleManager has many VisionModules, and provides camera configuration data to them. */
+/**
+ * VisionModuleManager has many VisionModules, and provides camera configuration data to them.
+ */
 public class VisionModuleManager {
     protected final List<VisionModule> visionModules = new ArrayList<>();
 
