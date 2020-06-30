@@ -12,7 +12,7 @@ public abstract class VisionSourceSettables {
         this.configuration = configuration;
     }
 
-    FrameStaticProperties frameStaticProperties;
+    protected FrameStaticProperties frameStaticProperties;
     protected HashMap<Integer, VideoMode> videoModes;
 
     public CameraConfiguration getConfiguration() {
