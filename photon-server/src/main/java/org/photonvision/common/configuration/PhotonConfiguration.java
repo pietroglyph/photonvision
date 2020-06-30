@@ -63,6 +63,7 @@ public class PhotonConfiguration {
     }
 
     public static class UICameraConfiguration {
+        @SuppressWarnings("unused")
         public double fov, tiltDegrees;
         public String nickname;
         public HashMap<String, Object> currentPipelineSettings;
