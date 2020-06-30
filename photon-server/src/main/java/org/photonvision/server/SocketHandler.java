@@ -60,6 +60,7 @@ public class SocketHandler {
     }
 
     protected void onClose(WsCloseContext context) {
+        logger.info("Closing for reason:\n    " + context.reason());
         users.remove(context);
     }
 
