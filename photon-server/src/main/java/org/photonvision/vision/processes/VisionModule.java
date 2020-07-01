@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import edu.wpi.first.networktables.NetworkTableInstance;
+import org.photonvision.common.configuration.ConfigManager;
 import org.photonvision.common.configuration.PhotonConfiguration;
 import org.photonvision.common.dataflow.DataChangeService;
 import org.photonvision.common.dataflow.DataChangeSubscriber;
@@ -77,7 +78,7 @@ public class VisionModule {
             if (event instanceof IncomingWebSocketEvent) {
                 var wsEvent = (IncomingWebSocketEvent<?>) event;
                 if (wsEvent.cameraIndex != null && wsEvent.cameraIndex == moduleIndex) {
-                    logger.debug(wsEvent.toString());
+                    logger.debug("Got WS event: \n-->" + wsEvent.toString());
 
                     var propName = wsEvent.propertyName;
                     var newValue = wsEvent.data;
@@ -91,18 +92,21 @@ public class VisionModule {
                             var orig = (ArrayList<Integer>)newValue;
                             var actual = new IntegerCouple(orig.get(0), orig.get(1));
                             propField.set(currentSettings, actual);
-                            return;
                         }
-
-                        if (propField.getType().isAssignableFrom(DoubleCouple.class)) {
+                        else if (propField.getType().isAssignableFrom(DoubleCouple.class)) {
                             var orig = (ArrayList<Double>)newValue;
                             var actual = new DoubleCouple(orig.get(0), orig.get(1));
                             propField.set(currentSettings, actual);
-                            return;
                         }
-
-                        if (!propField.getType().isEnum()) { // if the field is not an enum, get it based on the current pipeline
+                        else if (propField.getType().equals(Integer.TYPE)) {
+                            propField.set(currentSettings, (Integer) newValue);
+                        }
+                        else if (propField.getType().equals(Double.TYPE)) {
+                            propField.set(currentSettings, (Double) newValue);
+                        }
+                        else if (!propField.getType().isEnum()) { // if the field is not an enum, get it based on the current pipeline
                             propField.set(newValue, newValue);
+                            return;
                         } else {
                             // TODO: Enums!
                             var enumType = propField.getType();
@@ -115,6 +119,7 @@ public class VisionModule {
                     }
                 }
             }
+            ConfigManager.getInstance().save();
         }
     }
 
