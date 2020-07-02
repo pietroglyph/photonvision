@@ -24,6 +24,13 @@ public class CameraConfiguration {
     public CameraType cameraType = CameraType.UsbCamera;
     public CameraCalibrationCoefficients calibration;
     public List<Integer> cameraLeds = new ArrayList<>();
+    public int currentPipelineIndex = -1;
+
+    @JsonIgnore // this ignores the pipes as we serialize them to their own subfolder
+    public List<CVPipelineSettings> pipelineSettings = new ArrayList<>();
+
+    @JsonIgnore
+    public DriverModePipelineSettings driveModeSettings = new DriverModePipelineSettings();
 
     public CameraConfiguration(String baseName, String path) {
         this(baseName, baseName, baseName, path);
@@ -47,7 +54,8 @@ public class CameraConfiguration {
             @JsonProperty("path") String path,
             @JsonProperty("cameraType") CameraType cameraType,
             @JsonProperty("calibration") CameraCalibrationCoefficients calibration,
-            @JsonProperty("CameraLEDs") List<Integer> cameraLeds) {
+            @JsonProperty("cameraLEDs") List<Integer> cameraLeds,
+            @JsonProperty("currentPipelineIndex") int currentPipelineIndex) {
         this.baseName = baseName;
         this.uniqueName = uniqueName;
         this.nickname = nickname;
@@ -56,15 +64,10 @@ public class CameraConfiguration {
         this.cameraType = cameraType;
         this.calibration = calibration;
         this.cameraLeds = cameraLeds;
+        this.currentPipelineIndex = currentPipelineIndex;
 
-        logger.debug("Creating USB camera configuration for " + cameraType + baseName + " (AKA " + nickname + ") at " + path);
+        logger.debug("Creating camera configuration for " + cameraType + baseName + " (AKA " + nickname + ") at " + path);
     }
-
-    @JsonIgnore // this ignores the pipes as we serialize them to their own subfolder
-    public final List<CVPipelineSettings> pipelineSettings = new ArrayList<>();
-
-    @JsonIgnore
-    public DriverModePipelineSettings driveModeSettings = new DriverModePipelineSettings();
 
     public void addPipelineSettings(List<CVPipelineSettings> settings) {
         for (var setting : settings) {
@@ -87,5 +90,9 @@ public class CameraConfiguration {
 
         pipelineSettings.add(setting);
         pipelineSettings.sort(PipelineManager.PipelineSettingsIndexComparator);
+    }
+
+    public void setPipelineSettings(List<CVPipelineSettings> settings) {
+        pipelineSettings = settings;
     }
 }
