@@ -150,6 +150,7 @@ public class ReflectivePipeline extends CVPipeline<CVPipelineResult, ReflectiveP
 
         long sumPipeNanosElapsed = 0L;
 
+        rawInputMat.release();
         frame.image.getMat().copyTo(rawInputMat);
 
         CVPipeResult<Mat> rotateImageResult = rotateImagePipe.apply(frame.image.getMat());
@@ -220,11 +221,6 @@ public class ReflectivePipeline extends CVPipeline<CVPipelineResult, ReflectiveP
             sumPipeNanosElapsed += result.nanosElapsed;
         } else {
             result = draw2dContoursResult;
-        }
-
-        // TODO: better way?
-        if (settings.outputShowThresholded) {
-            rawInputMat.release();
         }
 
         // TODO: Implement all the things
