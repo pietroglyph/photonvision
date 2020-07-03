@@ -1,10 +1,6 @@
 package org.photonvision.vision;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.photonvision.vision.camera.CameraQuirk;

@@ -1,15 +1,11 @@
 package org.photonvision.vision.processes;
 
-import org.photonvision.common.dataflow.DataChangeService;
-import org.photonvision.vision.pipeline.CVPipelineSettings;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import org.photonvision.vision.pipeline.CVPipelineSettings;
 
-/**
- * VisionModuleManager has many VisionModules, and provides camera configuration data to them.
- */
+/** VisionModuleManager has many VisionModules, and provides camera configuration data to them. */
 public class VisionModuleManager {
 
     private static class ThreadSafeSingleton {
@@ -22,7 +18,7 @@ public class VisionModuleManager {
 
     protected final List<VisionModule> visionModules = new ArrayList<>();
 
-    private VisionModuleManager() { }
+    private VisionModuleManager() {}
 
     public List<VisionModule> getModules() {
         return visionModules;
