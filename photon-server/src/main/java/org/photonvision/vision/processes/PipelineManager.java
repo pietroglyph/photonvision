@@ -1,6 +1,5 @@
 package org.photonvision.vision.processes;
 
-import java.nio.channels.Pipe;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -13,8 +12,8 @@ public class PipelineManager {
     public static final int DRIVERMODE_INDEX = -1;
     public static final int CAL_3D_INDEX = -2;
 
-    public final List<CVPipelineSettings> userPipelineSettings;
-    private final Calibration3dPipeline calibration3dPipeline = new Calibration3dPipeline();
+    protected final List<CVPipelineSettings> userPipelineSettings;
+    protected final Calibration3dPipeline calibration3dPipeline = new Calibration3dPipeline();
     protected final DriverModePipeline driverModePipeline = new DriverModePipeline();
 
     /**
@@ -66,6 +65,10 @@ public class PipelineManager {
         return null;
     }
 
+    /**
+     * Gets a list of nicknames for all user pipelines
+     * @return The list of nicknames for all user pipelines
+     */
     public List<String> getPipelineNicknames() {
         List<String> ret = new ArrayList<>();
         for (var p : userPipelineSettings) {
@@ -74,9 +77,12 @@ public class PipelineManager {
         return ret;
     }
 
-
+    /**
+     * Gets the index of the currently active pipeline
+     * @return The index of the currently active pipeline
+     */
     public int getCurrentPipelineIndex() {
-        return lastPipelineIndex;
+        return currentPipelineIndex;
     }
 
     /**
