@@ -21,8 +21,9 @@ export default new Vuex.Store({
         undoRedo: undoRedo
     },
     state: {
-        currentCameraIndex: 0,
         saveBar: false,
+        compactMode: undefined, // Compact mode is initially unset on purpose
+        currentCameraIndex: 0,
         cameraSettings: [ // This is a list of objects representing the settings of all cameras
             {
                 tiltDegrees: 0.0,
@@ -66,7 +67,7 @@ export default new Vuex.Store({
                     contourIntersection: 0,
                     contourSortMode: 0,
                     outputShowMultipleTargets: false,
-                    selectedOutputs: [],
+                    selectedOutputs: [0, 1],
                     offsetRobotOffsetMode: 0,
                     solvePNPEnabled: false,
                     targetRegion: 0,
@@ -92,8 +93,9 @@ export default new Vuex.Store({
         ]
     },
     mutations: {
-        cameraSettings: set('cameraSettings'),
         saveBar: set('saveBar'),
+        compactMode: set('compactMode'),
+        cameraSettings: set('cameraSettings'),
         currentCameraIndex: set('currentCameraIndex'),
         pipelineResults: set('pipelineResults'),
         networkSettings: set('networkSettings'),
@@ -122,6 +124,7 @@ export default new Vuex.Store({
         }
     },
     getters: {
+        isDriverMode: state => state.cameraSettings[state.currentCameraIndex].currentPipelineIndex === -1,
         pipelineSettings: state => state.pipelineSettings,
         streamAddress: state =>
             "http://" + location.hostname + ":" + state.cameraSettings[state.currentCameraIndex].streamPort + "/stream.mjpg",

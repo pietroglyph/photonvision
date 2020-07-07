@@ -1,7 +1,12 @@
 <template>
   <div>
     <v-row align="center">
-      <v-col cols="10" md="5" lg="10" class="pt-0 pb-0 pl-6">
+      <v-col
+        cols="10"
+        md="5"
+        lg="10"
+        class="pt-0 pb-0 pl-6"
+      >
         <CVselect
           v-if="isCameraNameEdit === false"
           v-model="currentCameraIndex"
@@ -17,7 +22,11 @@
           @Enter="saveCameraNameChange"
         />
       </v-col>
-      <v-col cols="2" md="1" lg="2" >
+      <v-col
+        cols="2"
+        md="1"
+        lg="2"
+      >
         <CVicon
           v-if="isCameraNameEdit === false"
           color="#c5c5c5"
@@ -45,7 +54,12 @@
           />
         </div>
       </v-col>
-      <v-col cols="10" md="5" lg="10" class="pt-0 pb-0 pl-6">
+      <v-col
+        cols="10"
+        md="5"
+        lg="10"
+        class="pt-0 pb-0 pl-6"
+      >
         <CVselect
           v-model="currentPipelineIndex"
           name="Pipeline"
@@ -53,7 +67,12 @@
           @input="handleInputWithIndex('currentPipeline',currentPipelineIndex - 1)"
         />
       </v-col>
-      <v-col cols="2" md="1" lg="2" v-if="currentPipelineIndex !== 0">
+      <v-col
+        v-if="currentPipelineIndex !== 0"
+        cols="2"
+        md="1"
+        lg="2"
+      >
         <v-menu
           offset-y
           auto
@@ -111,15 +130,15 @@
         </v-menu>
       </v-col>
 
-<!--      <v-btn-->
-<!--        style="position: absolute; top:5px;right: 0;"-->
-<!--        tile-->
-<!--        color="#ffd843"-->
-<!--        @click="handleInput('command','save')"-->
-<!--      >-->
-<!--        <v-icon>save</v-icon>-->
-<!--        Save-->
-<!--      </v-btn>-->
+      <!--      <v-btn-->
+      <!--        style="position: absolute; top:5px;right: 0;"-->
+      <!--        tile-->
+      <!--        color="#ffd843"-->
+      <!--        @click="handleInput('command','save')"-->
+      <!--      >-->
+      <!--        <v-icon>save</v-icon>-->
+      <!--        Save-->
+      <!--      </v-btn>-->
     </v-row>
     <!--pipeline duplicate dialog-->
     <v-dialog
@@ -252,12 +271,12 @@
                         for (let cam in this.cameraList) {
                             if (this.cameraList.hasOwnProperty(cam)) {
                                 if (this.newCameraName === this.cameraList[cam]) {
-                                    return "Camera by that name already Exists"
+                                    return "A camera by that name already Exists"
                                 }
                             }
                         }
                     } else {
-                        return "Camera name can only contain letters, numbers and spaces"
+                        return "A camera name can only contain letters, numbers and spaces"
                     }
                 }
                 return ""
@@ -273,7 +292,7 @@
                             }
                         }
                     } else {
-                        return "Pipeline name can only contain letters, numbers, and spaces"
+                        return "A pipeline name can only contain letters, numbers, and spaces"
                     }
                 }
                 return ""

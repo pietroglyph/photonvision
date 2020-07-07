@@ -1,87 +1,119 @@
 <template>
-    <v-app>
-        <!-- Although most of the app runs with the "light" theme, the navigation drawer needs to have white text and icons so it uses the dark theme-->
-        <v-navigation-drawer dark app permanent :mini-variant="compact" color="primary">
-            <v-list>
-                <!-- List item for the heading; note that there are some tricks in setting padding and image width make things look right -->
-                <v-list-item :class="compact ? 'pr-0 pl-0' : ''">
-                    <v-list-item-icon class="mr-0">
-                        <img v-if="!compact" class="logo" src="./assets/logoLarge.png">
-                        <img v-else class="logo" src="./assets/logoSmall.png">
-                    </v-list-item-icon>
-                </v-list-item>
-
-                <v-divider></v-divider>
-
-                <v-list-item link to="dashboard">
-                    <v-list-item-icon>
-                        <v-icon>mdi-view-dashboard</v-icon>
-                    </v-list-item-icon>
-                    <v-list-item-content>
-                        <v-list-item-title>Dashboard</v-list-item-title>
-                    </v-list-item-content>
-                </v-list-item>
-                <v-list-item link to="settings">
-                    <!-- TODO: Expandable sub-elements? -->
-                    <v-list-item-icon>
-                        <v-icon>mdi-settings</v-icon>
-                    </v-list-item-icon>
-                    <v-list-item-content>
-                        <v-list-item-title>Settings</v-list-item-title>
-                    </v-list-item-content>
-                </v-list-item>
-                <v-list-item link href="https://docs.photonvision.org" target="_blank">
-                    <!-- TODO: Set to a local docs URL -->
-                    <v-list-item-icon>
-                        <v-icon>mdi-help-box</v-icon>
-                    </v-list-item-icon>
-                    <v-list-item-content>
-                        <v-list-item-title>Documentation</v-list-item-title>
-                    </v-list-item-content>
-                </v-list-item>
-
-                <v-list-item v-if="this.$vuetify.breakpoint.mdAndUp" link @click.stop="toggleCompactMode">
-                    <v-list-item-icon>
-                        <v-icon v-if="compact">mdi-chevron-right</v-icon>
-                        <v-icon v-else>mdi-chevron-left</v-icon>
-                    </v-list-item-icon>
-                    <v-list-item-content>
-                        <v-list-item-title>Compact Mode</v-list-item-title>
-                    </v-list-item-content>
-                </v-list-item>
-            </v-list>
-        </v-navigation-drawer>
-        <v-content>
-            <v-container
-                    fluid
-                    fill-height
+  <v-app>
+    <!-- Although most of the app runs with the "light" theme, the navigation drawer needs to have white text and icons so it uses the dark theme-->
+    <v-navigation-drawer
+      dark
+      app
+      permanent
+      :mini-variant="compact"
+      color="primary"
+    >
+      <v-list>
+        <!-- List item for the heading; note that there are some tricks in setting padding and image width make things look right -->
+        <v-list-item :class="compact ? 'pr-0 pl-0' : ''">
+          <v-list-item-icon class="mr-0">
+            <img
+              v-if="!compact"
+              class="logo"
+              src="./assets/logoLarge.png"
             >
-                <v-layout>
-                    <v-flex>
-                        <router-view @save="startTimer"/>
-                        <v-snackbar
-                                v-model="saveSnackbar"
-                                :timeout="1000"
-                                top
-                                color="accent"
-                        >
-                            <div style="text-align: center;width: 100%;">
-                                <h4>Saved All changes</h4>
-                            </div>
-                        </v-snackbar>
-                        <div v-if="isLogger">
-                            <keep-alive>
-                                <log-view
-                                        class="loggerClass"
-                                        :log="log"
-                                />
-                            </keep-alive>
-                        </div>
-                    </v-flex>
-                </v-layout>
-            </v-container>
-        </v-content>
-    </v-app>
+            <img
+              v-else
+              class="logo"
+              src="./assets/logoSmall.png"
+            >
+          </v-list-item-icon>
+        </v-list-item>
+
+        <v-divider />
+
+        <v-list-item
+          link
+          to="dashboard"
+        >
+          <v-list-item-icon>
+            <v-icon>mdi-view-dashboard</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title>Dashboard</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item
+          link
+          to="settings"
+        >
+          <!-- TODO: Expandable sub-elements? -->
+          <v-list-item-icon>
+            <v-icon>mdi-settings</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title>Settings</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item
+          link
+          href="https://docs.photonvision.org"
+          target="_blank"
+        >
+          <!-- TODO: Set to a local docs URL -->
+          <v-list-item-icon>
+            <v-icon>mdi-bookshelf</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title>Documentation</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
+        <v-list-item
+          v-if="this.$vuetify.breakpoint.mdAndUp"
+          link
+          @click.stop="toggleCompactMode"
+        >
+          <v-list-item-icon>
+            <v-icon v-if="compact">
+              mdi-chevron-right
+            </v-icon>
+            <v-icon v-else>
+              mdi-chevron-left
+            </v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title>Advanced Mode</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
+    <v-content>
+      <v-container
+        fluid
+        fill-height
+      >
+        <v-layout>
+          <v-flex>
+            <router-view @save="startTimer" />
+            <v-snackbar
+              v-model="saveSnackbar"
+              :timeout="1000"
+              top
+              color="accent"
+            >
+              <div style="text-align: center;width: 100%;">
+                <h4>Saved All changes</h4>
+              </div>
+            </v-snackbar>
+            <div v-if="isLogger">
+              <keep-alive>
+                <log-view
+                  class="loggerClass"
+                  :log="log"
+                />
+              </keep-alive>
+            </div>
+          </v-flex>
+        </v-layout>
+      </v-container>
+    </v-content>
+  </v-app>
 </template>
 
 <script>
@@ -96,7 +128,6 @@
             timer: undefined,
             isLogger: false,
             log: "",
-            compactMode: undefined,
         }),
         computed: {
             saveSnackbar: {
@@ -109,11 +140,11 @@
             },
             compact: {
                 get() {
-                    return this.compactMode == undefined ? this.$vuetify.breakpoint.smAndDown : this.compactMode || this.$vuetify.breakpoint.smAndDown;
+                    return this.$store.state.compactMode === undefined ? this.$vuetify.breakpoint.smAndDown : this.$store.state.compactMode || this.$vuetify.breakpoint.smAndDown;
                 },
                 set(value) {
                     // compactMode is the user's preference for compact mode; it overrides screen size
-                    this.compactMode = value;
+                    this.$store.commit("compactMode", value);
                 },
             }
         },
@@ -190,6 +221,23 @@
         }
     };
 </script>
+
+<style lang="scss" scoped>
+  @for $i from 1 through 6 {
+    .heading-#{$i} {
+      font-size: #{$i}rem;
+      line-height: 1;
+    }
+  }
+
+  @media only screen and (max-width: 1366px) {
+    @for $i from 1 through 6 {
+      .heading-#{$i} {
+        font-size: #{$i * 0.75}rem;
+      }
+    }
+  }
+</style>
 
 <style>
     .logo {

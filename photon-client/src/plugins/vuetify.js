@@ -13,5 +13,11 @@ export default new Vuetify({
             light: theme,
             dark: theme,
         }
+    },
+    breakpoint: {
+        thresholds: {
+            md: 1460,
+            lg: 2000,
+        },
     }
 });
