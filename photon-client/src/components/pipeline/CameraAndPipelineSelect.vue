@@ -1,28 +1,23 @@
 <template>
   <div>
     <v-row align="center">
-      <v-col
-        :cols="3"
-        class=""
-      >
-        <div style="padding-left:30px">
-          <CVselect
-            v-if="isCameraNameEdit === false"
-            v-model="currentCameraIndex"
-            name="Camera"
-            :list="$store.getters.cameraList"
-            @input="handleInput('currentCamera',currentCameraIndex)"
-          />
-          <CVinput
-            v-else
-            v-model="newCameraName"
-            name="Camera"
-            :error-message="checkCameraName"
-            @Enter="saveCameraNameChange"
-          />
-        </div>
+      <v-col cols="10" md="5" lg="10" class="pt-0 pb-0 pl-6">
+        <CVselect
+          v-if="isCameraNameEdit === false"
+          v-model="currentCameraIndex"
+          name="Camera"
+          :list="$store.getters.cameraList"
+          @input="handleInput('currentCamera',currentCameraIndex)"
+        />
+        <CVinput
+          v-else
+          v-model="newCameraName"
+          name="Camera"
+          :error-message="checkCameraName"
+          @Enter="saveCameraNameChange"
+        />
       </v-col>
-      <v-col :cols="1">
+      <v-col cols="2" md="1" lg="2" >
         <CVicon
           v-if="isCameraNameEdit === false"
           color="#c5c5c5"
@@ -50,10 +45,7 @@
           />
         </div>
       </v-col>
-      <v-col
-        :cols="3"
-        class=""
-      >
+      <v-col cols="10" md="5" lg="10" class="pt-0 pb-0 pl-6">
         <CVselect
           v-model="currentPipelineIndex"
           name="Pipeline"
@@ -61,15 +53,9 @@
           @input="handleInputWithIndex('currentPipeline',currentPipelineIndex - 1)"
         />
       </v-col>
-      <v-col
-        v-if="currentPipelineIndex !== 0"
-        :cols="1"
-        class=""
-        md="3"
-      >
+      <v-col cols="2" md="1" lg="2" v-if="currentPipelineIndex !== 0">
         <v-menu
           offset-y
-          dark
           auto
         >
           <template v-slot:activator="{ on }">
@@ -125,15 +111,15 @@
         </v-menu>
       </v-col>
 
-      <v-btn
-        style="position: absolute; top:5px;right: 0;"
-        tile
-        color="#ffd843"
-        @click="handleInput('command','save')"
-      >
-        <v-icon>save</v-icon>
-        Save
-      </v-btn>
+<!--      <v-btn-->
+<!--        style="position: absolute; top:5px;right: 0;"-->
+<!--        tile-->
+<!--        color="#ffd843"-->
+<!--        @click="handleInput('command','save')"-->
+<!--      >-->
+<!--        <v-icon>save</v-icon>-->
+<!--        Save-->
+<!--      </v-btn>-->
     </v-row>
     <!--pipeline duplicate dialog-->
     <v-dialog
