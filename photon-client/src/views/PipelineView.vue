@@ -126,7 +126,7 @@
       <v-row no-gutters>
         <v-col
           v-for="(tabs, idx) in tabGroups"
-          :key="tabs"
+          :key="idx"
           :cols="Math.floor(12 / tabGroups.length)"
           :class="idx != tabGroups.length - 1 ? 'pr-3' : ''"
           align-self="stretch"
@@ -146,8 +146,8 @@
               slider-color="accent"
             >
               <v-tab
-                v-for="tab in tabs.filter(it => it.name !== '3D' || is3D)"
-                :key="tab"
+                v-for="(tab, i) in tabs.filter(it => it.name !== '3D' || is3D)"
+                :key="i"
               >
                 {{ tab.name }}
               </v-tab>
@@ -156,7 +156,7 @@
               <keep-alive>
                 <!-- vision component -->
                 <component
-                  :is="tabs[selectedTabs[idx]].component"
+                  :is="(tabs[selectedTabs[idx]] || tabs[0]).component"
                   ref="component"
                   v-model="$store.getters.pipeline"
                   @update="$emit('save')"
@@ -264,6 +264,7 @@
                     ret[2] = [tabs.contours, tabs.output]
                     ret[3] = [tabs.targets, tabs.pnp];
                   }
+
                   return ret;
                 }
             },
