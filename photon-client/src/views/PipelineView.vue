@@ -1,6 +1,9 @@
 <template>
   <div>
-    <v-container class="pa-3" fluid>
+    <v-container
+      class="pa-3"
+      fluid
+    >
       <v-row
         no-gutters
         align="center"
@@ -60,7 +63,11 @@
           >
             <camera-and-pipeline-select />
           </v-card>
-          <v-card v-if="!$store.getters.isDriverMode" class="mt-0" color="primary">
+          <v-card
+            v-if="!$store.getters.isDriverMode"
+            class="mt-0"
+            color="primary"
+          >
             <v-row
               align="center"
               class="pl-3 pr-3"
@@ -117,31 +124,42 @@
         </v-col>
       </v-row>
       <v-row no-gutters>
-        <v-col v-for="(tabs, idx) in tabGroups" :key="tabs" :cols="Math.floor(12 / tabGroups.length)" :class="idx != tabGroups.length - 1 ? 'pr-3' : ''" align-self="stretch">
+        <v-col
+          v-for="(tabs, idx) in tabGroups"
+          :key="tabs"
+          :cols="Math.floor(12 / tabGroups.length)"
+          :class="idx != tabGroups.length - 1 ? 'pr-3' : ''"
+          align-self="stretch"
+        >
           <v-card
-                  color="primary"
-                  height="100%"
-                  class="pr-4 pl-4"
+            color="primary"
+            height="100%"
+            class="pr-4 pl-4"
           >
             <v-tabs
-                    v-if="!$store.getters.isDriverMode"
-                    v-model="selectedTabs[idx]"
-                    grow
-                    background-color="primary"
-                    dark
-                    height="48"
-                    slider-color="accent"
+              v-if="!$store.getters.isDriverMode"
+              v-model="selectedTabs[idx]"
+              grow
+              background-color="primary"
+              dark
+              height="48"
+              slider-color="accent"
             >
-              <v-tab v-for="tab in tabs.filter(it => it.name !== '3D' || is3D)" :key="tab">{{ tab.name }}</v-tab>
+              <v-tab
+                v-for="tab in tabs.filter(it => it.name !== '3D' || is3D)"
+                :key="tab"
+              >
+                {{ tab.name }}
+              </v-tab>
             </v-tabs>
             <div class="pl-4 pr-4 pt-2">
               <keep-alive>
                 <!-- vision component -->
                 <component
-                        :is="tabs[selectedTabs[idx]].component"
-                        ref="component"
-                        v-model="$store.getters.pipeline"
-                        @update="$emit('save')"
+                  :is="tabs[selectedTabs[idx]].component"
+                  ref="component"
+                  v-model="$store.getters.pipeline"
+                  @update="$emit('save')"
                 />
               </keep-alive>
             </div>
