@@ -38,7 +38,7 @@
               >
                 <div style="position: relative; width: 100%; height: 100%;">
                   <cvImage
-                    :address="'https://via.placeholder.com/1920x1080?text=No+stream+' + idx"
+                    :address="$store.getters.streamAddress + '?idx=' + idx"
                     scale="100"
                     max-height="300px"
                     max-height-md="320px"
@@ -245,7 +245,7 @@
 
                   // 2D array of tab names and component names; each sub-array is a separate tab group
                   let ret = [];
-                  if (this.$vuetify.breakpoint.smAndDown || !this.$store.state.compactMode) {
+                  if (this.$vuetify.breakpoint.smAndDown || !this.$store.state.compactMode || this.$store.getters.isDriverMode) {
                     // One big tab group with all the tabs
                     ret[0] = Object.values(tabs);
                   } else if (this.$vuetify.breakpoint.mdAndDown) {
@@ -282,7 +282,7 @@
                     // We switch the selector to single-select only on sm-and-down size devices, so we have to return a Number instead of an Array in that state
                     let ret = 0;
                     if (!this.$store.getters.isDriverMode) {
-                      ret = this.$store.getters.currentPipelineSettings.selectedOutputs;
+                      ret = this.$store.getters.currentPipelineSettings.selectedOutputs || [0];
                     }
 
                     if (this.$vuetify.breakpoint.mdAndUp) {
@@ -302,11 +302,6 @@
                         valToCommit = [value];
                     }
                     this.$store.commit('mutatePipeline', {'selectedOutputs': valToCommit});
-                }
-            },
-            selectedComponent: {
-                get() {
-                    return this.$store.getters.isDriverMode ? "InputTab" : ["InputTab", "ThresholdTab", "ContoursTab", "OutputTab", "pnpTab"][this.selectedTab];
                 }
             },
             fps: {

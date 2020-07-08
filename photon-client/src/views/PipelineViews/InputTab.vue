@@ -73,7 +73,10 @@
         computed: {
             largeBox: {
               get() {
-                return this.$vuetify.breakpoint.mdAndUp && !this.$store.state.compactMode ? 10 : 8;
+                // Sliders and selectors should be fuller width if we're on screen size medium and
+                // up and either not in compact mode (because the tab will be 100% screen width),
+                // or in driver mode (where the card will also be 100% screen width).
+                return this.$vuetify.breakpoint.mdAndUp && (!this.$store.state.compactMode || this.$store.getters.isDriverMode) ? 10 : 8;
               }
             },
             cameraExposure: {

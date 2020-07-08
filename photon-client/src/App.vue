@@ -52,8 +52,7 @@
         </v-list-item>
         <v-list-item
           link
-          href="https://docs.photonvision.org"
-          target="_blank"
+          to="docs"
         >
           <!-- TODO: Set to a local docs URL -->
           <v-list-item-icon>
