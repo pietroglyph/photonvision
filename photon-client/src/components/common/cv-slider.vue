@@ -1,10 +1,13 @@
 <template>
   <div>
-    <v-row dense align="center">
-      <v-col :cols="2">
+    <v-row
+      dense
+      align="center"
+    >
+      <v-col :cols="12 - (sliderCols || 8)">
         <span>{{ name }}</span>
       </v-col>
-      <v-col :cols="10">
+      <v-col :cols="sliderCols || 8">
         <v-slider
           :value="localValue"
           dark
@@ -47,7 +50,7 @@
 export default {
   name: "Slider",
   // eslint-disable-next-line vue/require-prop-types
-  props: ["min", "max", "name", "value", "step"],
+  props: ["min", "max", "name", "value", "step", "sliderCols"],
   data() {
     return {
       isFocused: false,
@@ -63,7 +66,7 @@ export default {
       set(value) {
         this.$emit("input", value);
       }
-    }
+    },
   },
   methods: {
     handleChange(val) {
