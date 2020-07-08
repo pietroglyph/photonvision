@@ -25,7 +25,6 @@
                       width: `${this.scale}%`,
                       height: `${this.scale}%`,
                     };
-                    console.log(this.maxHeightLg)
 
                     if (this.$vuetify.breakpoint.xl) {
                       ret["max-height"] = this.maxHeightXl;
