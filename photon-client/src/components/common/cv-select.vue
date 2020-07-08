@@ -4,10 +4,10 @@
       dense
       align="center"
     >
-      <v-col cols="4">
-        <span class="ml-2">{{ name }}</span>
+      <v-col :cols="12 - (selectCols || 9)">
+        <span>{{ name }}</span>
       </v-col>
-      <v-col cols="8">
+      <v-col :cols="selectCols || 9">
         <v-select
           v-model="localValue"
           :items="indexList"
@@ -28,7 +28,7 @@
     export default {
         name: 'Select',
       // eslint-disable-next-line vue/require-prop-types
-        props: ['list', 'name', 'value', 'disabled'],
+        props: ['list', 'name', 'value', 'disabled', 'selectCols'],
         data() {
             return {}
         },

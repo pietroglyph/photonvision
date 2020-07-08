@@ -1,13 +1,14 @@
 <template>
   <div>
-    <v-container fluid>
+    <v-container class="pa-3" fluid>
       <v-row
+        no-gutters
         align="center"
         justify="center"
-        class="pa-4 pb-0"
       >
         <v-col
           cols="12"
+          class="pr-lg-3 pb-3"
           :lg="$store.getters.isDriverMode ? 12 : 8"
           align-self="stretch"
         >
@@ -34,7 +35,7 @@
               >
                 <div style="position: relative; width: 100%; height: 100%;">
                   <cvImage
-                    :address="'http://localhost:8000/noStream.png?idx=' + idx"
+                    :address="'https://via.placeholder.com/1920x1080?text=No+stream+' + idx"
                     scale="100"
                     max-height="300px"
                     max-height-md="320px"
@@ -49,15 +50,17 @@
         </v-col>
         <v-col
           cols="12"
+          class="pb-3"
           :lg="$store.getters.isDriverMode ? 12 : 4"
           align-self="stretch"
         >
           <v-card
             color="primary"
+            class="mb-3"
           >
             <camera-and-pipeline-select />
           </v-card>
-          <v-card v-if="!$store.getters.isDriverMode" class="mt-4" color="primary">
+          <v-card v-if="!$store.getters.isDriverMode" class="mt-0" color="primary">
             <v-row
               align="center"
               class="pl-3 pr-3"
@@ -113,8 +116,8 @@
           </v-card>
         </v-col>
       </v-row>
-      <v-row class="pa-4 pt-0">
-        <v-col v-for="(tabs, idx) in tabGroups" :key="tabs" :cols="Math.floor(12 / tabGroups.length)" align-self="stretch">
+      <v-row no-gutters>
+        <v-col v-for="(tabs, idx) in tabGroups" :key="tabs" :cols="Math.floor(12 / tabGroups.length)" :class="idx != tabGroups.length - 1 ? 'pr-3' : ''" align-self="stretch">
           <v-card
                   color="primary"
                   height="100%"

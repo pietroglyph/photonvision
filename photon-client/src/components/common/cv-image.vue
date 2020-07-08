@@ -3,7 +3,6 @@
     id="CameraStream"
     :style="styleObject"
     :src="address"
-    crossorigin="Anonymous"
     alt=""
     @click="e => $emit('click', e)"
   >
