@@ -7,53 +7,53 @@
       >
         <span class="text--white">Target Location</span>
         <canvas
-          class="mt-2"
           id="canvasId"
+          class="mt-2"
           width="800"
           height="800"
         />
       </v-col>
       <!-- TODO: Move to targets tab -->
-<!--      <v-col-->
-<!--        align="center"-->
-<!--        cols="6"-->
-<!--      >-->
-<!--        <v-simple-table-->
-<!--          style="text-align: center; background-color: transparent; display: block; margin: auto;"-->
-<!--          dense-->
-<!--          dark-->
-<!--        >-->
-<!--          <template v-slot:default>-->
-<!--            <thead>-->
-<!--              <tr>-->
-<!--                <th class="text-center">-->
-<!--                  Target-->
-<!--                </th>-->
-<!--                <th class="text-center">-->
-<!--                  X-->
-<!--                </th>-->
-<!--                <th class="text-center">-->
-<!--                  Y-->
-<!--                </th>-->
-<!--                <th class="text-center">-->
-<!--                  Angle-->
-<!--                </th>-->
-<!--              </tr>-->
-<!--            </thead>-->
-<!--            <tbody>-->
-<!--              <tr-->
-<!--                v-for="(target, index) in targets"-->
-<!--                :key="index"-->
-<!--              >-->
-<!--                <td>{{ index }}</td>-->
-<!--                <td>{{ target.pose.translation.x.toFixed(2) }}</td>-->
-<!--                <td>{{ target.pose.translation.y.toFixed(2) }}</td>-->
-<!--                <td>{{ target.pose.rotation.radians.toFixed(2) }}</td>-->
-<!--              </tr>-->
-<!--            </tbody>-->
-<!--          </template>-->
-<!--        </v-simple-table>-->
-<!--      </v-col>-->
+      <!--      <v-col-->
+      <!--        align="center"-->
+      <!--        cols="6"-->
+      <!--      >-->
+      <!--        <v-simple-table-->
+      <!--          style="text-align: center; background-color: transparent; display: block; margin: auto;"-->
+      <!--          dense-->
+      <!--          dark-->
+      <!--        >-->
+      <!--          <template v-slot:default>-->
+      <!--            <thead>-->
+      <!--              <tr>-->
+      <!--                <th class="text-center">-->
+      <!--                  Target-->
+      <!--                </th>-->
+      <!--                <th class="text-center">-->
+      <!--                  X-->
+      <!--                </th>-->
+      <!--                <th class="text-center">-->
+      <!--                  Y-->
+      <!--                </th>-->
+      <!--                <th class="text-center">-->
+      <!--                  Angle-->
+      <!--                </th>-->
+      <!--              </tr>-->
+      <!--            </thead>-->
+      <!--            <tbody>-->
+      <!--              <tr-->
+      <!--                v-for="(target, index) in targets"-->
+      <!--                :key="index"-->
+      <!--              >-->
+      <!--                <td>{{ index }}</td>-->
+      <!--                <td>{{ target.pose.translation.x.toFixed(2) }}</td>-->
+      <!--                <td>{{ target.pose.translation.y.toFixed(2) }}</td>-->
+      <!--                <td>{{ target.pose.rotation.radians.toFixed(2) }}</td>-->
+      <!--              </tr>-->
+      <!--            </tbody>-->
+      <!--          </template>-->
+      <!--        </v-simple-table>-->
+      <!--      </v-col>-->
     </v-row>
   </div>
 </template>

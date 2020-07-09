@@ -56,7 +56,7 @@
         Shrink Selection
       </v-btn>
     </v-row>
-    <v-divider/>
+    <v-divider />
     <CVswitch
       v-model="erode"
       name="Erode"

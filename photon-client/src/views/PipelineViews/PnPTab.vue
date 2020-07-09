@@ -2,105 +2,105 @@
   <div>
     <!-- Special hidden upload input that gets 'clicked' when the user selects the right dropdown item' -->
     <input
-            ref="file"
-            type="file"
-            accept=".csv"
-            @change="readFile"
+      ref="file"
+      type="file"
+      accept=".csv"
+      style="display: none;"
 
-            style="display: none;"
+      @change="readFile"
     >
 
     <v-select
-            dark
-            color="accent"
-            item-color="secondary"
-            label="Select a target model"
-            v-model="selectedModel"
-            :items="FRCtargets"
-            @change="onModelSelect"
-            item-text="name"
-            item-value="data"
+      v-model="selectedModel"
+      dark
+      color="accent"
+      item-color="secondary"
+      label="Select a target model"
+      :items="FRCtargets"
+      item-text="name"
+      item-value="data"
+      @change="onModelSelect"
     />
-    <v-divider></v-divider>
+    <v-divider />
     <CVslider
-            class="pt-2"
-            slider-cols="12"
-            name="Contour simplification amount"
-            :disabled="selectedModel === null"
-            v-model="value.accuracy"
-            min="0"
-            max="100"
-            @input="handleData('accuracy')"
-            @rollback="e => rollback('accuracy', e)"
+      v-model="value.accuracy"
+      class="pt-2"
+      slider-cols="12"
+      name="Contour simplification amount"
+      :disabled="selectedModel === null"
+      min="0"
+      max="100"
+      @input="handleData('accuracy')"
+      @rollback="e => rollback('accuracy', e)"
     />
-    <v-divider class="pb-2"></v-divider>
+    <v-divider class="pb-2" />
     <mini-map
-            class="miniMapClass"
-            :targets="targets"
-            :horizontal-f-o-v="horizontalFOV"
+      class="miniMapClass"
+      :targets="targets"
+      :horizontal-f-o-v="horizontalFOV"
     />
-<!--    <v-row-->
-<!--      align="center"-->
-<!--      justify="start"-->
-<!--      dense-->
-<!--    >-->
-<!--      <v-col>-->
-<!--        <input-->
-<!--          ref="file"-->
-<!--          type="file"-->
-<!--          style="display: none"-->
-<!--          accept=".csv"-->
-<!--          @change="readFile"-->
-<!--        >-->
-<!--        <v-btn-->
-<!--          small-->
-<!--          color="accent"-->
-<!--          class="black&#45;&#45;text"-->
-<!--          @click="$refs.file.click()"-->
-<!--        >-->
-<!--          <v-icon>mdi-upload</v-icon>-->
-<!--          upload model-->
-<!--        </v-btn>-->
-<!--      </v-col>-->
-<!--    </v-row>-->
-<!--    <CVslider-->
-<!--      v-model="value.accuracy"-->
-<!--      name="Contour simplification"-->
-<!--      :min="0"-->
-<!--      :max="100"-->
-<!--      @input="handleData('accuracy')"-->
-<!--      @rollback="e=> rollback('accuracy',e)"-->
-<!--    />-->
-<!--    <v-row>-->
-<!--      <v-col>-->
-<!--        <mini-map-->
-<!--          class="miniMapClass"-->
-<!--          :targets="targets"-->
-<!--          :horizontal-f-o-v="horizontalFOV"-->
-<!--        />-->
-<!--      </v-col>-->
-<!--      <v-col>-->
-<!--        <v-select-->
-<!--          v-model="selectedModel"-->
-<!--          :items="FRCtargets"-->
-<!--          item-text="name"-->
-<!--          item-value="data"-->
-<!--          dark-->
-<!--          color="#ffd843"-->
-<!--          item-color="green"-->
-<!--        />-->
-<!--        <v-btn-->
-<!--          v-if="selectedModel !== null"-->
-<!--          color="accent"-->
-<!--          class="black&#45;&#45;text"-->
-<!--          small-->
-<!--          dark-->
-<!--          @click="uploadPremade"-->
-<!--        >-->
-<!--          Upload Premade-->
-<!--        </v-btn>-->
-<!--      </v-col>-->
-<!--    </v-row>-->
+    <!--    <v-row-->
+    <!--      align="center"-->
+    <!--      justify="start"-->
+    <!--      dense-->
+    <!--    >-->
+    <!--      <v-col>-->
+    <!--        <input-->
+    <!--          ref="file"-->
+    <!--          type="file"-->
+    <!--          style="display: none"-->
+    <!--          accept=".csv"-->
+    <!--          @change="readFile"-->
+    <!--        >-->
+    <!--        <v-btn-->
+    <!--          small-->
+    <!--          color="accent"-->
+    <!--          class="black&#45;&#45;text"-->
+    <!--          @click="$refs.file.click()"-->
+    <!--        >-->
+    <!--          <v-icon>mdi-upload</v-icon>-->
+    <!--          upload model-->
+    <!--        </v-btn>-->
+    <!--      </v-col>-->
+    <!--    </v-row>-->
+    <!--    <CVslider-->
+    <!--      v-model="value.accuracy"-->
+    <!--      name="Contour simplification"-->
+    <!--      :min="0"-->
+    <!--      :max="100"-->
+    <!--      @input="handleData('accuracy')"-->
+    <!--      @rollback="e=> rollback('accuracy',e)"-->
+    <!--    />-->
+    <!--    <v-row>-->
+    <!--      <v-col>-->
+    <!--        <mini-map-->
+    <!--          class="miniMapClass"-->
+    <!--          :targets="targets"-->
+    <!--          :horizontal-f-o-v="horizontalFOV"-->
+    <!--        />-->
+    <!--      </v-col>-->
+    <!--      <v-col>-->
+    <!--        <v-select-->
+    <!--          v-model="selectedModel"-->
+    <!--          :items="FRCtargets"-->
+    <!--          item-text="name"-->
+    <!--          item-value="data"-->
+    <!--          dark-->
+    <!--          color="#ffd843"-->
+    <!--          item-color="green"-->
+    <!--        />-->
+    <!--        <v-btn-->
+    <!--          v-if="selectedModel !== null"-->
+    <!--          color="accent"-->
+    <!--          class="black&#45;&#45;text"-->
+    <!--          small-->
+    <!--          dark-->
+    <!--          @click="uploadPremade"-->
+    <!--        >-->
+    <!--          Upload Premade-->
+    <!--        </v-btn>-->
+    <!--      </v-col>-->
+    <!--    </v-row>-->
     <v-snackbar
       v-model="snack"
       top

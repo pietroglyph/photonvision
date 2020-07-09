@@ -130,14 +130,14 @@
         </v-menu>
       </v-col>
 
-<!--      <v-btn-->
-<!--        outlined-->
-<!--        color="accent"-->
-<!--        @click="handleInput('command','save')"-->
-<!--      >-->
-<!--        <v-icon>save</v-icon>-->
-<!--        Save-->
-<!--      </v-btn>-->
+      <!--      <v-btn-->
+      <!--        outlined-->
+      <!--        color="accent"-->
+      <!--        @click="handleInput('command','save')"-->
+      <!--      >-->
+      <!--        <v-icon>save</v-icon>-->
+      <!--        Save-->
+      <!--      </v-btn>-->
     </v-row>
     <!--pipeline duplicate dialog-->
     <v-dialog

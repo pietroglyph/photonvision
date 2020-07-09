@@ -156,9 +156,9 @@
                 <!-- vision component -->
                 <component
                   :is="(tabs[selectedTabs[idx]] || tabs[0]).component"
-                  :is3D="is3D"
                   ref="component"
                   v-model="$store.getters.pipeline"
+                  :is3d="is3D"
                   @update="$emit('save')"
                 />
               </keep-alive>
