@@ -271,3 +271,10 @@
         color: white;
     }
 </style>
+
+<style>
+  /* Hack */
+  .v-divider {
+    border-color: #1f779f !important;
+  }
+</style>

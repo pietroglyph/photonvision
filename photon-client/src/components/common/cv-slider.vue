@@ -15,7 +15,8 @@
           :max="max"
           :min="min"
           hide-details
-          color="#ffd843"
+          color="accent"
+          :disabled="disabled"
           :step="step"
           @start="isClicked = true"
           @end="isClicked = false"
@@ -28,6 +29,7 @@
               dark
               :max="max"
               :min="min"
+              :disabled="disabled"
               :value="localValue"
               class="mt-0 pt-0"
               hide-details
@@ -50,7 +52,7 @@
 export default {
   name: "Slider",
   // eslint-disable-next-line vue/require-prop-types
-  props: ["min", "max", "name", "value", "step", "sliderCols"],
+  props: ["min", "max", "name", "value", "step", "sliderCols", "disabled"],
   data() {
     return {
       isFocused: false,

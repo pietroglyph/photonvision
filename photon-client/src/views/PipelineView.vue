@@ -11,7 +11,7 @@
       >
         <v-col
           cols="12"
-          class="pr-lg-3 pb-3"
+          :class="['pb-3 ', $store.getters.isDriverMode ? '' : 'pr-lg-3']"
           :lg="$store.getters.isDriverMode ? 12 : 8"
           align-self="stretch"
         >
@@ -59,13 +59,12 @@
         >
           <v-card
             color="primary"
-            class="mb-3"
           >
             <camera-and-pipeline-select />
           </v-card>
           <v-card
             v-if="!$store.getters.isDriverMode"
-            class="mt-0"
+            class="mt-3"
             color="primary"
           >
             <v-row
@@ -157,6 +156,7 @@
                 <!-- vision component -->
                 <component
                   :is="(tabs[selectedTabs[idx]] || tabs[0]).component"
+                  :is3D="is3D"
                   ref="component"
                   v-model="$store.getters.pipeline"
                   @update="$emit('save')"
@@ -188,12 +188,13 @@
 
 <script>
     import CameraAndPipelineSelect from "../components/pipeline/CameraAndPipelineSelect";
-    import cvImage from '../components/common/cv-image'
-    import InputTab from './PipelineViews/InputTab'
-    import ThresholdTab from './PipelineViews/ThresholdTab'
-    import ContoursTab from './PipelineViews/ContoursTab'
-    import OutputTab from './PipelineViews/OutputTab'
-    import pnpTab from './PipelineViews/3D'
+    import cvImage from '../components/common/cv-image';
+    import InputTab from './PipelineViews/InputTab';
+    import ThresholdTab from './PipelineViews/ThresholdTab';
+    import ContoursTab from './PipelineViews/ContoursTab';
+    import OutputTab from './PipelineViews/OutputTab';
+    import TargetsTab from "./PipelineViews/TargetsTab";
+    import PnPTab from './PipelineViews/PnPTab';
 
     export default {
         name: 'CameraTab',
@@ -204,7 +205,8 @@
             ThresholdTab,
             ContoursTab,
             OutputTab,
-            pnpTab,
+            TargetsTab,
+            PnPTab,
         },
         data() {
             return {
@@ -239,7 +241,7 @@
                             },
                             pnp: {
                               name: "3D",
-                              component: "pnpTab",
+                              component: "PnPTab",
                             }
                   };
 
