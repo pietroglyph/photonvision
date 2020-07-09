@@ -54,7 +54,6 @@
           link
           to="docs"
         >
-          <!-- TODO: Set to a local docs URL -->
           <v-list-item-icon>
             <v-icon>mdi-bookshelf</v-icon>
           </v-list-item-icon>

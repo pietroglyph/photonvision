@@ -39,68 +39,6 @@
       :targets="targets"
       :horizontal-f-o-v="horizontalFOV"
     />
-    <!--    <v-row-->
-    <!--      align="center"-->
-    <!--      justify="start"-->
-    <!--      dense-->
-    <!--    >-->
-    <!--      <v-col>-->
-    <!--        <input-->
-    <!--          ref="file"-->
-    <!--          type="file"-->
-    <!--          style="display: none"-->
-    <!--          accept=".csv"-->
-    <!--          @change="readFile"-->
-    <!--        >-->
-    <!--        <v-btn-->
-    <!--          small-->
-    <!--          color="accent"-->
-    <!--          class="black&#45;&#45;text"-->
-    <!--          @click="$refs.file.click()"-->
-    <!--        >-->
-    <!--          <v-icon>mdi-upload</v-icon>-->
-    <!--          upload model-->
-    <!--        </v-btn>-->
-    <!--      </v-col>-->
-    <!--    </v-row>-->
-    <!--    <CVslider-->
-    <!--      v-model="value.accuracy"-->
-    <!--      name="Contour simplification"-->
-    <!--      :min="0"-->
-    <!--      :max="100"-->
-    <!--      @input="handleData('accuracy')"-->
-    <!--      @rollback="e=> rollback('accuracy',e)"-->
-    <!--    />-->
-    <!--    <v-row>-->
-    <!--      <v-col>-->
-    <!--        <mini-map-->
-    <!--          class="miniMapClass"-->
-    <!--          :targets="targets"-->
-    <!--          :horizontal-f-o-v="horizontalFOV"-->
-    <!--        />-->
-    <!--      </v-col>-->
-    <!--      <v-col>-->
-    <!--        <v-select-->
-    <!--          v-model="selectedModel"-->
-    <!--          :items="FRCtargets"-->
-    <!--          item-text="name"-->
-    <!--          item-value="data"-->
-    <!--          dark-->
-    <!--          color="#ffd843"-->
-    <!--          item-color="green"-->
-    <!--        />-->
-    <!--        <v-btn-->
-    <!--          v-if="selectedModel !== null"-->
-    <!--          color="accent"-->
-    <!--          class="black&#45;&#45;text"-->
-    <!--          small-->
-    <!--          dark-->
-    <!--          @click="uploadPremade"-->
-    <!--        >-->
-    <!--          Upload Premade-->
-    <!--        </v-btn>-->
-    <!--      </v-col>-->
-    <!--    </v-row>-->
     <v-snackbar
       v-model="snack"
       top
