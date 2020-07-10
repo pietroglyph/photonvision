@@ -24,12 +24,14 @@ export default new Vuex.Store({
         saveBar: false,
         compactMode: undefined, // Compact mode is initially unset on purpose
         currentCameraIndex: 0,
+        selectedOutputs: [0, 1], // 0 indicates normal, 1 indicates threshold
         cameraSettings: [ // This is a list of objects representing the settings of all cameras
             {
                 tiltDegrees: 0.0,
                 currentPipelineIndex: 0,
                 pipelineNicknames: ["Unknown"],
-                streamPort: 1181,
+                outputStreamPort: 1181,
+                inputStreamPort: 1182,
                 nickname: "Unknown",
                 videoFormatList: [
                     {
@@ -67,7 +69,6 @@ export default new Vuex.Store({
                     contourIntersection: 0,
                     contourSortMode: 0,
                     outputShowMultipleTargets: false,
-                    selectedOutputs: [0, 1],
                     offsetRobotOffsetMode: 0,
                     solvePNPEnabled: false,
                     targetRegion: 0,
@@ -133,7 +134,8 @@ export default new Vuex.Store({
         isDriverMode: state => state.cameraSettings[state.currentCameraIndex].currentPipelineIndex === -1,
         pipelineSettings: state => state.pipelineSettings,
         streamAddress: state =>
-            "http://" + location.hostname + ":" + state.cameraSettings[state.currentCameraIndex].streamPort + "/stream.mjpg",
+            ["http://" + location.hostname + ":" + state.cameraSettings[state.currentCameraIndex].inputStreamPort + "/stream.mjpg",
+                "http://" + location.hostname + ":" + state.cameraSettings[state.currentCameraIndex].outputStreamPort + "/stream.mjpg"],
         targets: state => state.pipelineResults.length,
         currentPipelineResults: state =>
             state.pipelineResults[state.cameraSettings[state.currentCameraIndex].currentPipelineIndex],

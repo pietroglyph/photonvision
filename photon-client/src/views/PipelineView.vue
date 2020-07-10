@@ -38,7 +38,7 @@
               >
                 <div style="position: relative; width: 100%; height: 100%;">
                   <cvImage
-                    :address="$store.getters.streamAddress + '?idx=' + idx"
+                    :address="$store.getters.streamAddress[idx]"
                     scale="100"
                     max-height="300px"
                     max-height-md="320px"
@@ -218,64 +218,64 @@
         computed: {
             tabGroups: {
                 get() {
-                  let tabs = {
-                          input: {
-                              name: "Input",
-                              component: "InputTab",
-                            },
-                            threshold: {
-                              name: "Threshold",
-                              component: "ThresholdTab",
-                            },
-                            contours: {
-                              name: "Contours",
-                              component: "ContoursTab",
-                            },
-                            output: {
-                              name: "Output",
-                              component: "OutputTab",
-                            },
-                            targets: {
-                              name: "Target Info",
-                              component: "TargetsTab",
-                            },
-                            pnp: {
-                              name: "3D",
-                              component: "PnPTab",
-                            }
-                  };
+                    let tabs = {
+                        input: {
+                            name: "Input",
+                            component: "InputTab",
+                        },
+                        threshold: {
+                            name: "Threshold",
+                            component: "ThresholdTab",
+                        },
+                        contours: {
+                            name: "Contours",
+                            component: "ContoursTab",
+                        },
+                        output: {
+                            name: "Output",
+                            component: "OutputTab",
+                        },
+                        targets: {
+                            name: "Target Info",
+                            component: "TargetsTab",
+                        },
+                        pnp: {
+                            name: "3D",
+                            component: "PnPTab",
+                        }
+                    };
 
-                  // 2D array of tab names and component names; each sub-array is a separate tab group
-                  let ret = [];
-                  if (this.$vuetify.breakpoint.smAndDown || !this.$store.state.compactMode || this.$store.getters.isDriverMode) {
-                    // One big tab group with all the tabs
-                    ret[0] = Object.values(tabs);
-                  } else if (this.$vuetify.breakpoint.mdAndDown) {
-                    // Two tab groups, one with "input, threshold, contours, output" and the other with "target info, 3D"
-                    ret[0] = [tabs.input, tabs.threshold, tabs.contours, tabs.output];
-                    ret[1] = [tabs.targets, tabs.pnp];
-                  } else if (this.$vuetify.breakpoint.lgAndDown) {
-                    // Three tab groups, one with "input", one with "threshold, contours, output", and the other with "target info, 3D"
-                    ret[0] = [tabs.input];
-                    ret[1] = [tabs.threshold, tabs.contours, tabs.output];
-                    ret[2] = [tabs.targets, tabs.pnp];
-                  } else if (this.$vuetify.breakpoint.xl) {
-                    // Three tab groups, one with "input", one with "threshold, contours", and the other with "output, target info, 3D"
-                    ret[0] = [tabs.input];
-                    ret[1] = [tabs.threshold];
-                    ret[2] = [tabs.contours, tabs.output]
-                    ret[3] = [tabs.targets, tabs.pnp];
-                  }
+                    // 2D array of tab names and component names; each sub-array is a separate tab group
+                    let ret = [];
+                    if (this.$vuetify.breakpoint.smAndDown || !this.$store.state.compactMode || this.$store.getters.isDriverMode) {
+                        // One big tab group with all the tabs
+                        ret[0] = Object.values(tabs);
+                    } else if (this.$vuetify.breakpoint.mdAndDown) {
+                        // Two tab groups, one with "input, threshold, contours, output" and the other with "target info, 3D"
+                        ret[0] = [tabs.input, tabs.threshold, tabs.contours, tabs.output];
+                        ret[1] = [tabs.targets, tabs.pnp];
+                    } else if (this.$vuetify.breakpoint.lgAndDown) {
+                        // Three tab groups, one with "input", one with "threshold, contours, output", and the other with "target info, 3D"
+                        ret[0] = [tabs.input];
+                        ret[1] = [tabs.threshold, tabs.contours, tabs.output];
+                        ret[2] = [tabs.targets, tabs.pnp];
+                    } else if (this.$vuetify.breakpoint.xl) {
+                        // Three tab groups, one with "input", one with "threshold, contours", and the other with "output, target info, 3D"
+                        ret[0] = [tabs.input];
+                        ret[1] = [tabs.threshold];
+                        ret[2] = [tabs.contours, tabs.output]
+                        ret[3] = [tabs.targets, tabs.pnp];
+                    }
 
-                  return ret;
+                    return ret;
                 }
             },
             processingMode: {
                 get() {
-                  return this.is3D ? 0 : 1;
+                    return this.is3D ? 0 : 1;
                 },
                 set(value) {
-                  this.is3D = value === 0;
+                    this.is3D = value === 0;
                 }
             },
             selectedOutputs: {
@@ -284,7 +284,7 @@
                     // We switch the selector to single-select only on sm-and-down size devices, so we have to return a Number instead of an Array in that state
                     let ret = 0;
                     if (!this.$store.getters.isDriverMode) {
-                      ret = this.$store.getters.currentPipelineSettings.selectedOutputs || [0];
+                        ret = this.$store.state.selectedOutputs || [0];
                     }
 
                     if (this.$vuetify.breakpoint.mdAndUp) {
@@ -304,6 +304,7 @@
                         valToCommit = [value];
                     }
                     this.$store.commit('mutatePipeline', {'selectedOutputs': valToCommit});
+                    this.handlePipelineUpdate('selectedOutputs', valToCommit);
                 }
             },
             fps: {
