@@ -61,7 +61,6 @@ public class VisionModule {
     private final LinkedList<FrameConsumer> frameConsumers = new LinkedList<>();
     private final NTDataConsumer ntConsumer;
     private final int moduleIndex;
-    private final MJPGFrameConsumer uiStreamer;
     private long lastUpdateTimestamp = -1;
 
     private MJPGFrameConsumer dashboardOutputStreamer;
@@ -90,17 +89,12 @@ public class VisionModule {
         dashboardInputStreamer =
                 new MJPGFrameConsumer(visionSource.getSettables().getConfiguration().uniqueName + "-input");
 
-        uiStreamer = new MJPGFrameConsumer(visionSource.getSettables().getConfiguration().nickname);
         addDataConsumer(data -> {
-            Imgcodecs.imwrite("D:\\Pictures\\in.png", data.result.inputFrame.image.getMat());
             dashboardInputStreamer.accept(data.result.inputFrame);
         });
         addDataConsumer(data -> {
-            Imgcodecs.imwrite("D:\\Pictures\\out.png", data.result.outputFrame.image.getMat());
             dashboardOutputStreamer.accept(data.result.outputFrame);
         });
-
-        addFrameConsumer(uiStreamer);
 
         ntConsumer =
                 new NTDataConsumer(

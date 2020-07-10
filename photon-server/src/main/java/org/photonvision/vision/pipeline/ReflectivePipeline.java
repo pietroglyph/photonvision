@@ -268,11 +268,6 @@ public class ReflectivePipeline extends CVPipeline<CVPipelineResult, ReflectiveP
             drawOnOutputResult = draw2dContoursResultOnOutput;
         }
 
-        Imgcodecs.imwrite("D:\\Pictures\\first.png", outputMats.first);
-        Imgcodecs.imwrite("D:\\Pictures\\second.png", outputMats.second);
-        Imgcodecs.imwrite("D:\\Pictures\\in.png", drawOnInputResult.result);
-        Imgcodecs.imwrite("D:\\Pictures\\out.png", drawOnOutputResult.result);
-
         return new CVPipelineResult(
             MathUtils.nanosToMillis(sumPipeNanosElapsed),
             collect2dTargetsResult.result,
