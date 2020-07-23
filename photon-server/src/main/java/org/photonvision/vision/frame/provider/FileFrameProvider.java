@@ -17,6 +17,7 @@
 
 package org.photonvision.vision.frame.provider;
 
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -71,7 +72,7 @@ public class FileFrameProvider implements FrameProvider {
 
         if (image.cols() > 0 && image.rows() > 0) {
             FrameStaticProperties m_properties =
-                    new FrameStaticProperties(image.width(), image.height(), m_fov);
+                    new FrameStaticProperties(image.width(), image.height(), m_fov, new Rotation2d());
             m_frame = new Frame(new CVMat(image), m_properties);
         } else {
             throw new RuntimeException("Image loading failed!");
