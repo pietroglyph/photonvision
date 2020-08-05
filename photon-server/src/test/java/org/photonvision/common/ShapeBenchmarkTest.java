@@ -73,7 +73,8 @@ public class ShapeBenchmarkTest {
         var frameProvider =
                 new FileFrameProvider(
                         TestUtils.getWPIImagePath(TestUtils.WPI2019Image.kCargoSideStraightDark72in),
-                        TestUtils.WPI2019Image.FOV);
+                        TestUtils.WPI2019Image.FOV,
+                        null);
 
         frameProvider.setImageReloading(true);
 
@@ -97,7 +98,8 @@ public class ShapeBenchmarkTest {
         var frameProvider =
                 new FileFrameProvider(
                         TestUtils.getWPIImagePath(TestUtils.WPI2020Image.kBlueGoal_084in_Center),
-                        TestUtils.WPI2020Image.FOV);
+                        TestUtils.WPI2020Image.FOV,
+                        null);
 
         frameProvider.setImageReloading(true);
 
@@ -121,7 +123,8 @@ public class ShapeBenchmarkTest {
         var frameProvider =
                 new FileFrameProvider(
                         TestUtils.getWPIImagePath(TestUtils.WPI2020Image.kBlueGoal_084in_Center_720p),
-                        TestUtils.WPI2020Image.FOV);
+                        TestUtils.WPI2020Image.FOV,
+                        null);
 
         frameProvider.setImageReloading(true);
 
@@ -145,7 +148,8 @@ public class ShapeBenchmarkTest {
         var frameProvider =
                 new FileFrameProvider(
                         TestUtils.getWPIImagePath(TestUtils.WPI2019Image.kCargoStraightDark72in_HighRes),
-                        TestUtils.WPI2019Image.FOV);
+                        TestUtils.WPI2019Image.FOV,
+                        null);
 
         frameProvider.setImageReloading(true);
 

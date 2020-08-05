@@ -110,12 +110,12 @@ public class SolvePNPTest {
         pipeline.getSettings().contourIntersection = ContourIntersectionDirection.Up;
         pipeline.getSettings().cornerDetectionUseConvexHulls = true;
         pipeline.getSettings().targetModel = TargetModel.get2019Target();
-        pipeline.getSettings().cameraCalibration = getCoeffs(LIFECAM_240P_CAL_FILE);
 
         var frameProvider =
                 new FileFrameProvider(
                         TestUtils.getWPIImagePath(TestUtils.WPI2019Image.kCargoStraightDark48in),
-                        TestUtils.WPI2019Image.FOV);
+                        TestUtils.WPI2019Image.FOV,
+                        getCoeffs(LIFECAM_240P_CAL_FILE));
 
         CVPipelineResult pipelineResult;
 
@@ -142,14 +142,14 @@ public class SolvePNPTest {
         pipeline.getSettings().solvePNPEnabled = true;
         pipeline.getSettings().cornerDetectionAccuracyPercentage = 4;
         pipeline.getSettings().cornerDetectionUseConvexHulls = true;
-        pipeline.getSettings().cameraCalibration = getCoeffs(LIFECAM_480P_CAL_FILE);
         pipeline.getSettings().targetModel = TargetModel.get2020Target(36);
         pipeline.getSettings().cameraPitch = Rotation2d.fromDegrees(0.0);
 
         var frameProvider =
                 new FileFrameProvider(
                         TestUtils.getWPIImagePath(TestUtils.WPI2020Image.kBlueGoal_224in_Left),
-                        TestUtils.WPI2020Image.FOV);
+                        TestUtils.WPI2020Image.FOV,
+                        getCoeffs(LIFECAM_480P_CAL_FILE));
 
         CVPipelineResult pipelineResult = pipeline.run(frameProvider.get());
         printTestResults(pipelineResult);

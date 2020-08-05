@@ -23,6 +23,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import org.opencv.core.Mat;
 import org.opencv.imgcodecs.Imgcodecs;
+import org.photonvision.vision.calibration.CameraCalibrationCoefficients;
 import org.photonvision.vision.frame.Frame;
 import org.photonvision.vision.frame.FrameProvider;
 import org.photonvision.vision.frame.FrameStaticProperties;
@@ -34,6 +35,7 @@ import org.photonvision.vision.opencv.CVMat;
 */
 public class FileFrameProvider implements FrameProvider {
     private static int count = 0;
+    private final CameraCalibrationCoefficients calibration;
 
     private Frame m_frame;
     private final Path m_path;
@@ -48,11 +50,12 @@ public class FileFrameProvider implements FrameProvider {
     * @param path The path of the image to read from.
     * @param fov The fov of the image.
     */
-    public FileFrameProvider(Path path, double fov) {
+    public FileFrameProvider(Path path, double fov, CameraCalibrationCoefficients cal) {
         if (!Files.exists(path))
             throw new RuntimeException("Invalid path for image: " + path.toAbsolutePath().toString());
         m_path = path;
         m_fov = fov;
+        this.calibration = cal;
 
         loadImage();
     }
@@ -64,7 +67,11 @@ public class FileFrameProvider implements FrameProvider {
     * @param fov The fov of the image.
     */
     public FileFrameProvider(String pathAsString, double fov) {
-        this(Paths.get(pathAsString), fov);
+        this(Paths.get(pathAsString), fov, null);
+    }
+
+    public FileFrameProvider(Path path, double fov) {
+        this(path, fov, null);
     }
 
     private void loadImage() {
@@ -72,7 +79,7 @@ public class FileFrameProvider implements FrameProvider {
 
         if (image.cols() > 0 && image.rows() > 0) {
             FrameStaticProperties m_properties =
-                    new FrameStaticProperties(image.width(), image.height(), m_fov, new Rotation2d());
+                    new FrameStaticProperties(image.width(), image.height(), m_fov, new Rotation2d(), null);
             m_frame = new Frame(new CVMat(image), m_properties);
         } else {
             throw new RuntimeException("Image loading failed!");

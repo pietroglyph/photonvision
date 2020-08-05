@@ -40,7 +40,7 @@ public class Main {
     public static final int DEFAULT_WEBPORT = 5800;
 
     public static void main(String[] args) {
-        boolean isRelease = !PhotonVersion.isRelease; // Hack!!!! Until PhotonVersion script fixed
+        boolean isRelease = PhotonVersion.isRelease;
         var logLevel = isRelease ? LogLevel.INFO : LogLevel.DEBUG;
         Logger.setLevel(LogGroup.Camera, logLevel);
         Logger.setLevel(LogGroup.WebServer, logLevel);
