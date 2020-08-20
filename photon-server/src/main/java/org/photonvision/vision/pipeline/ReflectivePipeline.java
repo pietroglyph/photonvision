@@ -38,7 +38,8 @@ public class ReflectivePipeline extends CVPipeline<CVPipelineResult, ReflectiveP
 
     private final RotateImagePipe rotateImagePipe = new RotateImagePipe();
     private final ErodeDilatePipe erodeDilatePipe = new ErodeDilatePipe();
-    private final GPUAcceleratedHSVPipe hsvPipe = new GPUAcceleratedHSVPipe(GPUAccelerator.TransferMode.GL_READ_PIXELS);
+    private final GPUAcceleratedHSVPipe hsvPipe =
+            new GPUAcceleratedHSVPipe(GPUAccelerator.TransferMode.GL_READ_PIXELS);
     private final FindContoursPipe findContoursPipe = new FindContoursPipe();
     private final SpeckleRejectPipe speckleRejectPipe = new SpeckleRejectPipe();
     private final FilterContoursPipe filterContoursPipe = new FilterContoursPipe();
