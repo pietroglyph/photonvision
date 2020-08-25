@@ -38,14 +38,14 @@ public class Draw2dTargetsPipe
     protected Void process(Triple<Mat, List<TrackedTarget>, Integer> in) {
         if (!params.shouldDraw) return null;
 
+        var fps = in.getRight();
+        var imageSize = Math.sqrt(in.getLeft().rows() * in.getLeft().cols());
+
         if (!in.getMiddle().isEmpty()
                 && (params.showCentroid
                         || params.showMaximumBox
                         || params.showRotatedBox
                         || params.showShape)) {
-
-            var fps = in.getRight();
-            var imageSize = Math.sqrt(in.getLeft().rows() * in.getLeft().cols());
 
             var centroidColour = ColorHelper.colorToScalar(params.centroidColor);
             var maximumBoxColour = ColorHelper.colorToScalar(params.maximumBoxColor);
@@ -144,20 +144,20 @@ public class Draw2dTargetsPipe
                             centroidColour,
                             (int) Math.ceil(imageSize * params.kPixelsToBoxThickness));
                 }
-
-                // Draw FPS
-                var textSize = params.kPixelsToText * imageSize;
-                var thickness = params.kPixelsToThickness * imageSize;
-                Imgproc.putText(
-                        in.getLeft(),
-                        fps.toString(),
-                        new Point(10, 10 + textSize * 25),
-                        0,
-                        textSize,
-                        ColorHelper.colorToScalar(params.textColor),
-                        (int) thickness);
             }
         }
+
+        // Draw FPS
+        var textSize = params.kPixelsToText * imageSize;
+        var thickness = params.kPixelsToThickness * imageSize;
+        Imgproc.putText(
+                in.getLeft(),
+                fps.toString(),
+                new Point(10, 10 + textSize * 25),
+                0,
+                textSize,
+                ColorHelper.colorToScalar(params.textColor),
+                (int) thickness);
 
         return null;
     }

@@ -33,7 +33,9 @@ import org.photonvision.common.logging.Logger;
 import org.photonvision.common.networking.NetworkManager;
 import org.photonvision.common.util.TestUtils;
 import org.photonvision.server.Server;
+import org.photonvision.vision.camera.CameraType;
 import org.photonvision.vision.camera.FileVisionSource;
+import org.photonvision.vision.camera.GPUAcceleratedPicamSource;
 import org.photonvision.vision.camera.USBCameraSource;
 import org.photonvision.vision.pipeline.CVPipelineSettings;
 import org.photonvision.vision.pipeline.ReflectivePipelineSettings;
@@ -92,14 +94,13 @@ public class Main {
             var sources = VisionSourceManager.loadAllSources(camConfigs.values());
 
             for (var src : sources) {
-                var usbSrc = (USBCameraSource) src;
-                collectedSources.put(usbSrc, usbSrc.configuration.pipelineSettings);
+                collectedSources.put(src, src.getSettables().getConfiguration().pipelineSettings);
                 logger.debug(
                         () ->
                                 "Matched config for camera \""
                                         + src.getFrameProvider().getName()
                                         + "\" and loaded "
-                                        + usbSrc.configuration.pipelineSettings.size()
+                                        + src.getSettables().getConfiguration().pipelineSettings.size()
                                         + " pipelines");
             }
         } else {

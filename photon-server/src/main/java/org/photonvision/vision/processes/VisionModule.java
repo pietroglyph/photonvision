@@ -69,6 +69,8 @@ public class VisionModule {
     MJPGFrameConsumer dashboardInputStreamer;
     MJPGFrameConsumer dashboardOutputStreamer;
 
+    long lastTime = System.currentTimeMillis();
+
     public VisionModule(PipelineManager pipelineManager, VisionSource visionSource, int index) {
         logger =
                 new Logger(
@@ -99,8 +101,8 @@ public class VisionModule {
         dashboardInputStreamer =
                 new MJPGFrameConsumer(visionSource.getSettables().getConfiguration().uniqueName + "-input");
 
-        addResultConsumer(result -> dashboardInputStreamer.accept(result.inputFrame));
-        addResultConsumer(result -> dashboardOutputStreamer.accept(result.outputFrame));
+//        addResultConsumer(result -> dashboardInputStreamer.accept(result.inputFrame));
+//        addResultConsumer(result -> dashboardOutputStreamer.accept(result.outputFrame));
 
         ntConsumer =
                 new NTDataPublisher(
