@@ -102,7 +102,7 @@ public class VisionModule {
                 new MJPGFrameConsumer(visionSource.getSettables().getConfiguration().uniqueName + "-input");
 
 //        addResultConsumer(result -> dashboardInputStreamer.accept(result.inputFrame));
-//        addResultConsumer(result -> dashboardOutputStreamer.accept(result.outputFrame));
+        addResultConsumer(result -> dashboardOutputStreamer.accept(result.outputFrame));
 
         ntConsumer =
                 new NTDataPublisher(
