@@ -212,7 +212,7 @@
         </v-card-title>
 
         <v-card-text>
-          3D mode cannot be enabled because the currently selected resolution is not calibrated yet. Please <a href="/#/cameras" @click="$emit('switch-to-cameras')" class="white--text"> visit the Cameras tab</a> to calibrate this resolution.
+          Because the current resolution {{ this.$store.getters.videoFormatList[this.$store.getters.currentPipelineSettings.cameraVideoModeIndex].width }} x {{ this.$store.getters.videoFormatList[this.$store.getters.currentPipelineSettings.cameraVideoModeIndex].height }} is not yet calibrated, 3D mode cannot be enabled. Please <a href="/cameras"> visit the Cameras tab</a> to calibrate this resolution. For now, SolvePNP will do nothing.
         </v-card-text>
 
         <v-divider />
@@ -387,6 +387,11 @@
             }
         },
         methods: {
+            isCalibrated() {
+                const resolution = this.$store.getters.videoFormatList[this.$store.getters.currentPipelineSettings.cameraVideoModeIndex];
+                return this.$store.getters.currentCameraSettings.calibrations
+                    .some(e => e.width === resolution.width && e.height === resolution.height)
+            },
             onImageClick(event) {
                 // Only run on the input stream
                 if (event.target.alt !== "Stream0") return;
