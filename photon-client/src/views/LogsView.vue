@@ -54,11 +54,11 @@
       <v-card-actions>
         <v-spacer />
         <v-btn
-                color="primary"
+                color="white"
                 text
                 @click="$store.state.logsOverlay = false"
         >
-          OK
+          Close
         </v-btn>
       </v-card-actions>
     </v-card>
@@ -117,10 +117,6 @@ export default {
 </script>
 
 <style scoped>
-.log-item:hover {
-  backgrund-color: red;
-}
-
 .v-btn-toggle.fill {
     width: 100%;
     height: 100%;

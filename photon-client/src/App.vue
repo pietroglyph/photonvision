@@ -40,6 +40,7 @@
         <v-list-item
           link
           to="cameras"
+          ref="camerasTabOpener"
           @click="switchToDriverMode()"
         >
           <v-list-item-icon>
@@ -117,7 +118,7 @@
       >
         <v-layout>
           <v-flex>
-            <router-view />
+            <router-view v-on:switch-to-cameras="switchToDriverMode" />
           </v-flex>
         </v-layout>
       </v-container>
@@ -231,7 +232,6 @@ import Logs from "./views/LogsView"
             },
             // eslint-disable-next-line no-unused-vars
             logMessage(message, levelInt) {
-                console.log(message)
                 this.$store.commit('logString', {
                     ['level']: levelInt,
                     ['message']: message
