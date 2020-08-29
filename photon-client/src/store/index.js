@@ -16,6 +16,7 @@ export default new Vuex.Store({
     state: {
         backendConnected: false,
         colorPicking: false,
+        logsOverlay: false,
         compactMode: localStorage.getItem("compactMode") === undefined ? undefined : localStorage.getItem("compactMode") === "true", // Compact mode is initially unset on purpose
         logMessages: [],
         currentCameraIndex: 0,
