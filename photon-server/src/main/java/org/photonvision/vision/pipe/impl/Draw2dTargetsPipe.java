@@ -36,6 +36,21 @@ public class Draw2dTargetsPipe
 
     @Override
     protected Void process(Triple<Mat, List<TrackedTarget>, Integer> in) {
+        // Always draw FPS
+        var imageSize = Math.sqrt(in.getLeft().rows() * in.getLeft().cols());
+
+        var fps = in.getRight();
+        var textSize = params.kPixelsToText * imageSize;
+        var thickness = params.kPixelsToThickness * imageSize;
+        Imgproc.putText(
+                in.getLeft(),
+                fps.toString(),
+                new Point(10, 10 + textSize * 25),
+                0,
+                textSize,
+                ColorHelper.colorToScalar(params.textColor),
+                (int) thickness);
+
         if (!params.shouldDraw) return null;
 
         var fps = in.getRight();
@@ -102,8 +117,6 @@ public class Draw2dTargetsPipe
                 }
 
                 if (params.showContourNumber) {
-                    var textSize = params.kPixelsToText * imageSize;
-                    var thickness = params.kPixelsToThickness * imageSize;
                     var center = target.m_mainContour.getCenterPoint();
                     var textPos =
                             new Point(

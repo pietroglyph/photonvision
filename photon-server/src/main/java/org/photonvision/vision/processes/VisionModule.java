@@ -38,10 +38,14 @@ import org.photonvision.vision.camera.CameraQuirk;
 import org.photonvision.vision.camera.QuirkyCamera;
 import org.photonvision.vision.camera.USBCameraSource;
 import org.photonvision.vision.frame.Frame;
-import org.photonvision.vision.frame.FrameConsumer;
 import org.photonvision.vision.frame.consumer.MJPGFrameConsumer;
+import org.photonvision.vision.pipeline.AdvancedPipelineSettings;
+import org.photonvision.vision.pipeline.OutputStreamPipeline;
+import org.photonvision.vision.pipeline.ReflectivePipelineSettings;
 import org.photonvision.vision.pipeline.UICalibrationData;
 import org.photonvision.vision.pipeline.result.CVPipelineResult;
+import org.photonvision.vision.target.TargetModel;
+import org.photonvision.vision.target.TrackedTarget;
 
 /**
 * This is the God Class
@@ -57,14 +61,16 @@ public class VisionModule {
     protected final PipelineManager pipelineManager;
     protected final VisionSource visionSource;
     private final VisionRunner visionRunner;
+    private final StreamRunnable streamRunnable;
     private final LinkedList<CVPipelineResultConsumer> resultConsumers = new LinkedList<>();
-    private final LinkedList<FrameConsumer> frameConsumers = new LinkedList<>();
+    private final LinkedList<CVPipelineResultConsumer> fpsLimitedResultConsumers = new LinkedList<>();
     private final NTDataPublisher ntConsumer;
     private final UIDataPublisher uiDataConsumer;
     protected final int moduleIndex;
     protected final QuirkyCamera cameraQuirks;
 
     private long lastFrameConsumeMillis;
+    protected TrackedTarget lastPipelineResultBestTarget;
 
     MJPGFrameConsumer dashboardInputStreamer;
     MJPGFrameConsumer dashboardOutputStreamer;
@@ -84,6 +90,7 @@ public class VisionModule {
                         this.visionSource.getFrameProvider(),
                         this.pipelineManager::getCurrentUserPipeline,
                         this::consumeResult);
+        this.streamRunnable = new StreamRunnable(new OutputStreamPipeline());
         this.moduleIndex = index;
 
         // do this
@@ -101,8 +108,8 @@ public class VisionModule {
         dashboardInputStreamer =
                 new MJPGFrameConsumer(visionSource.getSettables().getConfiguration().uniqueName + "-input");
 
-//        addResultConsumer(result -> dashboardInputStreamer.accept(result.inputFrame));
-        addResultConsumer(result -> dashboardOutputStreamer.accept(result.outputFrame));
+        fpsLimitedResultConsumers.add(result -> dashboardInputStreamer.accept(result.inputFrame));
+        fpsLimitedResultConsumers.add(result -> dashboardOutputStreamer.accept(result.outputFrame));
 
         ntConsumer =
                 new NTDataPublisher(
@@ -114,6 +121,9 @@ public class VisionModule {
         uiDataConsumer = new UIDataPublisher(index);
         addResultConsumer(ntConsumer);
         addResultConsumer(uiDataConsumer);
+        addResultConsumer(
+                (result) ->
+                        lastPipelineResultBestTarget = result.hasTargets() ? result.targets.get(0) : null);
 
         setPipeline(visionSource.getSettables().getConfiguration().currentPipelineIndex);
 
@@ -130,6 +140,58 @@ public class VisionModule {
         }
     }
 
+    private class StreamRunnable extends Thread {
+        private final OutputStreamPipeline outputStreamPipeline;
+
+        private Frame inputFrame, outputFrame;
+        private AdvancedPipelineSettings settings = new AdvancedPipelineSettings();
+        private List<TrackedTarget> targets = new ArrayList<>();
+        private double fps = 0;
+
+        private boolean shouldRun = false;
+
+        public StreamRunnable(OutputStreamPipeline outputStreamPipeline) {
+            this.outputStreamPipeline = outputStreamPipeline;
+        }
+
+        public void updateData(
+                Frame inputFrame,
+                Frame outputFrame,
+                AdvancedPipelineSettings settings,
+                List<TrackedTarget> targets,
+                double fps) {
+            this.inputFrame = inputFrame;
+            this.outputFrame = outputFrame;
+            this.settings = settings;
+            this.targets = targets;
+            this.fps = fps;
+
+            shouldRun =
+                    inputFrame != null
+                            && !inputFrame.image.getMat().empty()
+                            && outputFrame != null
+                            && !outputFrame.image.getMat().empty();
+        }
+
+        @Override
+        public void run() {
+            while (true) {
+                if (shouldRun) {
+                    var osr = outputStreamPipeline.process(inputFrame, outputFrame, settings, targets, fps);
+                    consumeFpsLimitedResult(osr);
+                    shouldRun = false;
+                } else {
+                    // busy wait! hurray!
+                    try {
+                        Thread.sleep(1);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+    }
+
     void setDriverMode(boolean isDriverMode) {
         pipelineManager.setDriverMode(isDriverMode);
         saveAndBroadcastAll();
@@ -137,6 +199,7 @@ public class VisionModule {
 
     public void start() {
         visionRunner.startProcess();
+        streamRunnable.start();
     }
 
     public void setFovAndPitch(double fov, Rotation2d pitch) {
@@ -252,15 +315,16 @@ public class VisionModule {
         ntConsumer.updateCameraNickname(newName);
 
         // rename streams
-        frameConsumers.remove(dashboardOutputStreamer);
-        frameConsumers.remove(dashboardInputStreamer);
+        fpsLimitedResultConsumers.clear();
+
         dashboardOutputStreamer =
                 new MJPGFrameConsumer(
                         visionSource.getSettables().getConfiguration().uniqueName + "-output");
         dashboardInputStreamer =
                 new MJPGFrameConsumer(visionSource.getSettables().getConfiguration().uniqueName + "-input");
-        frameConsumers.add(dashboardOutputStreamer);
-        frameConsumers.add(dashboardInputStreamer);
+
+        fpsLimitedResultConsumers.add(result -> dashboardInputStreamer.accept(result.inputFrame));
+        fpsLimitedResultConsumers.add(result -> dashboardOutputStreamer.accept(result.outputFrame));
     }
 
     public PhotonConfiguration.UICameraConfiguration toUICameraConfig() {
@@ -330,10 +394,20 @@ public class VisionModule {
     private void consumeResult(CVPipelineResult result) {
         consumePipelineResult(result);
 
-        var frame = result.outputFrame;
-        consumeFrame(frame);
-
-        result.release();
+        // total hack. kms
+        if (pipelineManager.getCurrentPipelineIndex() >= 0) {
+            var fps = 1000.0 / result.getLatencyMillis();
+            streamRunnable.updateData(
+                    result.inputFrame,
+                    result.outputFrame,
+                    (AdvancedPipelineSettings) pipelineManager.getCurrentPipelineSettings(),
+                    result.targets,
+                    fps);
+            // the streamRunnable manages releasing in this case
+        } else {
+            consumeFpsLimitedResult(result);
+            result.release();
+        }
     }
 
     private void consumePipelineResult(CVPipelineResult result) {
@@ -342,12 +416,23 @@ public class VisionModule {
         }
     }
 
-    private void consumeFrame(Frame frame) {
+    private void consumeFpsLimitedResult(CVPipelineResult result) {
         if (System.currentTimeMillis() - lastFrameConsumeMillis > 1000 / StreamFPSCap) {
-            for (var frameConsumer : frameConsumers) {
-                frameConsumer.accept(frame);
+            for (var c : fpsLimitedResultConsumers) {
+                c.accept(result);
             }
             lastFrameConsumeMillis = System.currentTimeMillis();
+        }
+        result.release();
+    }
+
+    public void setTargetModel(TargetModel targetModel) {
+        var settings = pipelineManager.getCurrentUserPipeline().getSettings();
+        if (settings instanceof ReflectivePipelineSettings) {
+            ((ReflectivePipelineSettings) settings).targetModel = targetModel;
+            saveAndBroadcastAll();
+        } else {
+            logger.error("Cannot set target model of non-reflective pipe! Ignoring...");
         }
     }
 }

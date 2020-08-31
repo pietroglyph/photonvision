@@ -18,10 +18,15 @@
 package org.photonvision.vision.pipeline;
 
 import java.util.Objects;
+import org.opencv.core.Point;
 import org.photonvision.common.util.numbers.DoubleCouple;
 import org.photonvision.common.util.numbers.IntegerCouple;
+import org.photonvision.vision.opencv.ContourGroupingMode;
+import org.photonvision.vision.opencv.ContourIntersectionDirection;
 import org.photonvision.vision.opencv.ContourSortMode;
+import org.photonvision.vision.pipe.impl.CornerDetectionPipe;
 import org.photonvision.vision.target.RobotOffsetPointMode;
+import org.photonvision.vision.target.TargetModel;
 import org.photonvision.vision.target.TargetOffsetPointEdge;
 import org.photonvision.vision.target.TargetOrientation;
 
@@ -62,16 +67,36 @@ public class AdvancedPipelineSettings extends CVPipelineSettings {
     public RobotOffsetPointMode offsetRobotOffsetMode = RobotOffsetPointMode.None;
 
     // the point set by the user in Single Point Offset mode (maybe double too? idr)
-    public DoubleCouple offsetCalibrationPoint = new DoubleCouple();
+    public Point offsetSinglePoint = new Point();
 
     // the two values that define the line of the Dual Point Offset calibration (think y=mx+b)
-    public double offsetDualLineM = 1;
-    public double offsetDualLineB = 0;
+    public Point offsetDualPointA = new Point();
+    public double offsetDualPointAArea = 0;
+    public Point offsetDualPointB = new Point();
+    public double offsetDualPointBArea = 0;
+
+    // how many contours to attempt to group (Single, Dual)
+    public ContourGroupingMode contourGroupingMode = ContourGroupingMode.Single;
+
+    // the direction in which contours must intersect to be considered intersecting
+    public ContourIntersectionDirection contourIntersection = ContourIntersectionDirection.Up;
+
+    // 3d settings
+    public boolean solvePNPEnabled = false;
+    public TargetModel targetModel = TargetModel.get2020Target();
+
+    // Corner detection settings
+    public CornerDetectionPipe.DetectionStrategy cornerDetectionStrategy =
+            CornerDetectionPipe.DetectionStrategy.APPROX_POLY_DP_AND_EXTREME_CORNERS;
+    public boolean cornerDetectionUseConvexHulls = true;
+    public boolean cornerDetectionExactSideCount = false;
+    public int cornerDetectionSideCount = 4;
+    public double cornerDetectionAccuracyPercentage = 10;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof AdvancedPipelineSettings)) return false;
         if (!super.equals(o)) return false;
         AdvancedPipelineSettings that = (AdvancedPipelineSettings) o;
         return outputShouldDraw == that.outputShouldDraw
@@ -79,19 +104,31 @@ public class AdvancedPipelineSettings extends CVPipelineSettings {
                 && erode == that.erode
                 && dilate == that.dilate
                 && contourSpecklePercentage == that.contourSpecklePercentage
-                && Double.compare(that.offsetDualLineM, offsetDualLineM) == 0
-                && Double.compare(that.offsetDualLineB, offsetDualLineB) == 0
-                && hsvHue.equals(that.hsvHue)
-                && hsvSaturation.equals(that.hsvSaturation)
-                && hsvValue.equals(that.hsvValue)
-                && contourArea.equals(that.contourArea)
-                && contourRatio.equals(that.contourRatio)
-                && contourFullness.equals(that.contourFullness)
+                && Double.compare(that.offsetDualPointAArea, offsetDualPointAArea) == 0
+                && Double.compare(that.offsetDualPointBArea, offsetDualPointBArea) == 0
+                && solvePNPEnabled == that.solvePNPEnabled
+                && cornerDetectionUseConvexHulls == that.cornerDetectionUseConvexHulls
+                && cornerDetectionExactSideCount == that.cornerDetectionExactSideCount
+                && cornerDetectionSideCount == that.cornerDetectionSideCount
+                && Double.compare(that.cornerDetectionAccuracyPercentage, cornerDetectionAccuracyPercentage)
+                        == 0
+                && Objects.equals(hsvHue, that.hsvHue)
+                && Objects.equals(hsvSaturation, that.hsvSaturation)
+                && Objects.equals(hsvValue, that.hsvValue)
+                && Objects.equals(contourArea, that.contourArea)
+                && Objects.equals(contourRatio, that.contourRatio)
+                && Objects.equals(contourFullness, that.contourFullness)
                 && contourSortMode == that.contourSortMode
                 && contourTargetOffsetPointEdge == that.contourTargetOffsetPointEdge
                 && contourTargetOrientation == that.contourTargetOrientation
                 && offsetRobotOffsetMode == that.offsetRobotOffsetMode
-                && offsetCalibrationPoint.equals(that.offsetCalibrationPoint);
+                && Objects.equals(offsetSinglePoint, that.offsetSinglePoint)
+                && Objects.equals(offsetDualPointA, that.offsetDualPointA)
+                && Objects.equals(offsetDualPointB, that.offsetDualPointB)
+                && contourGroupingMode == that.contourGroupingMode
+                && contourIntersection == that.contourIntersection
+                && Objects.equals(targetModel, that.targetModel)
+                && cornerDetectionStrategy == that.cornerDetectionStrategy;
     }
 
     @Override
@@ -113,8 +150,19 @@ public class AdvancedPipelineSettings extends CVPipelineSettings {
                 contourTargetOffsetPointEdge,
                 contourTargetOrientation,
                 offsetRobotOffsetMode,
-                offsetCalibrationPoint,
-                offsetDualLineM,
-                offsetDualLineB);
+                offsetSinglePoint,
+                offsetDualPointA,
+                offsetDualPointAArea,
+                offsetDualPointB,
+                offsetDualPointBArea,
+                contourGroupingMode,
+                contourIntersection,
+                solvePNPEnabled,
+                targetModel,
+                cornerDetectionStrategy,
+                cornerDetectionUseConvexHulls,
+                cornerDetectionExactSideCount,
+                cornerDetectionSideCount,
+                cornerDetectionAccuracyPercentage);
     }
 }
